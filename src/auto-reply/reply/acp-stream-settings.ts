@@ -12,16 +12,32 @@ const DEFAULT_ACP_MAX_OUTPUT_CHARS = 24_000;
 const DEFAULT_ACP_MAX_SESSION_UPDATE_CHARS = 320;
 
 const ACP_TAG_VISIBILITY_DEFAULTS: Record<AcpSessionUpdateTag, boolean> = {
+  // Always surface — the operator needs to see what the agent is
+  // doing and what the agent is reasoning about. Pre-defaults left
+  // tool calls / plan / thinking hidden, which made the projector
+  // surface effectively one tag (agent_message_chunk). Operators
+  // watching an MM session channel had no signal between "I sent a
+  // message" and "the final answer text streamed back" — long tool-
+  // use stretches looked like silence. Gateroom issues #282 / #346.
   agent_message_chunk: true,
-  tool_call: false,
-  tool_call_update: false,
-  usage_update: false,
-  available_commands_update: false,
-  current_mode_update: false,
+  tool_call: true,
+  tool_call_update: true,
+  agent_thought_chunk: true,
+  plan: true,
+  // Surface terminal-state and context drift so operators can
+  // diagnose without journal-grepping the worker. usage_update
+  // doubles as the compaction signal (claude-agent-acp folds
+  // compact_boundary into a usage reset). Mode / available-commands
+  // updates make `/clear`, mode switches, and skill-load drift
+  // observable. Gateroom issue #346.
+  usage_update: true,
+  current_mode_update: true,
+  available_commands_update: true,
+  // Internal-state tags stay hidden by default — they fire often
+  // and noise the channel without giving operators an actionable
+  // signal.
   config_option_update: false,
   session_info_update: false,
-  plan: false,
-  agent_thought_chunk: false,
 };
 
 export type AcpDeliveryMode = "live" | "final_only";

@@ -1307,6 +1307,20 @@ export async function monitorMattermostProvider(opts: MonitorMattermostOpts = {}
         });
         const hasControlCommand = core.channel.text.hasControlCommand(rawText, cfg);
         const isControlCommand = allowTextCommands && hasControlCommand;
+        // Gateroom #337: posts that start with `/` but aren't one of
+        // *our* control commands (i.e. they're a Mattermost-level
+        // slash command, a harness `/clear` / `/usage`, or a skill
+        // `/git-fork` etc.) shouldn't reach the default agent — the
+        // operator typed them as commands, not as chat. Without this
+        // gate the worker channel's default agent replies to every
+        // `/gr-claude`, `/clear`, etc. that scrolls past it.
+        const looksLikeForeignSlash = rawText.trimStart().startsWith("/") && !hasControlCommand;
+        if (looksLikeForeignSlash) {
+          logVerboseMessage(
+            `mattermost: drop post starting with / (not an openclaw control command; sender=${senderId})`,
+          );
+          return;
+        }
         const useAccessGroups = cfg.commands?.useAccessGroups !== false;
         const commandDmAllowFrom = kind === "direct" ? effectiveAllowFrom : normalizedAllowFrom;
         const senderAllowedForCommands = isMattermostSenderAllowed({

@@ -144,6 +144,17 @@ export async function recoverStuckDiagnosticSession(
       return outcome;
     }
 
+    // Capture the lane's queued-work depth *before* resetCommandLane
+    // runs (it'd be drained to 0 right after). When the wedge has no
+    // active run but the lane has queued user messages waiting on a
+    // phantom "processing" turn (gateroom #419 / second failure mode
+    // of #405), draining that queue is itself the recovery work — the
+    // outcome below treats `queuedBefore > 0` as "released" so the
+    // session-state coordinator transitions diagnosticSessionStates
+    // back to idle. Pre-fix it stayed `noop` and the wedge state
+    // persisted for hours, with every new operator message logged as
+    // a fresh stuck-session diagnostic.
+    let queuedBefore = 0;
     if (!activeSessionId && sessionLane) {
       const laneSnapshot = getCommandLaneSnapshot(sessionLane);
       if (laneSnapshot.activeCount > 0) {
@@ -160,12 +171,13 @@ export async function recoverStuckDiagnosticSession(
         diag.warn(`stuck session recovery outcome: ${formatRecoveryOutcome(outcome)}`);
         return outcome;
       }
+      queuedBefore = laneSnapshot.queuedCount;
     }
 
     const released =
       sessionLane && (!activeSessionId || !aborted || !drained) ? resetCommandLane(sessionLane) : 0;
 
-    if (aborted || released > 0) {
+    if (aborted || released > 0 || queuedBefore > 0) {
       const action = aborted ? "abort_embedded_run" : "release_lane";
       const stoppedFields = formatStoppedCronSessionDiagnosticFields(
         resolveCronSessionDiagnosticContext({ sessionKey: params.sessionKey, activeSessionId }),
@@ -173,7 +185,7 @@ export async function recoverStuckDiagnosticSession(
       diag.warn(
         `stuck session recovery: sessionId=${params.sessionId ?? activeSessionId ?? "unknown"} sessionKey=${
           params.sessionKey ?? "unknown"
-        } age=${Math.round(params.ageMs / 1000)}s action=${action} aborted=${aborted} drained=${drained} released=${released}${
+        } age=${Math.round(params.ageMs / 1000)}s action=${action} aborted=${aborted} drained=${drained} released=${released} queuedBefore=${queuedBefore}${
           stoppedFields ? ` ${stoppedFields}` : ""
         }`,
       );
