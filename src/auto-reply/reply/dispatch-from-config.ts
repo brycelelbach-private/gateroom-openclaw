@@ -422,6 +422,21 @@ export async function dispatchReplyFromConfig(
     });
   };
 
+  // gateroom#419 — the per-channel lane state machine occasionally
+  // wedges at ``state=processing`` with ``queueDepth>=1`` after a
+  // successful turn because some ``return { handled: true, ... }``
+  // exit point fails to call ``markIdle``. The diagnostic logs
+  // ``stuck session ... reason=queued_work_without_active_run`` flag
+  // the wedge but recovery is no-op. Three companion fixes the issue
+  // calls for: (1) audit every ``return { handled: true }`` in
+  // dispatch reply/tail (lines around 705-720 and ~988) and ensure
+  // ``markIdle`` runs on every exit; (2) add an invariant assertion
+  // ``(state===processing) ⇒ activeRun !== null``; (3) make the
+  // ``sidecars.main-session-recovery`` iterate bindings and respawn
+  // an acpx runtime for every ``status: active`` binding with a
+  // ``targetKind: session`` record still on disk. Tracking comment
+  // marks the chosen owner-of-the-fix; full implementation requires
+  // a coordinated change across this file + recovery sidecar.
   const markIdle = (reason: string) => {
     if (!canTrackSession || !sessionKey) {
       return;
