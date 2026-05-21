@@ -125,6 +125,23 @@ const MattermostAccountSchemaBase = z
     chatmode: z.enum(["oncall", "onmessage", "onchar"]).optional(),
     oncharPrefixes: z.array(z.string()).optional(),
     requireMention: z.boolean().optional(),
+    /**
+     * Bot-author handling for incoming Mattermost posts (gateroom#444).
+     *
+     * - ``true`` (default): bot-authored posts dispatch to the agent
+     *   like any other post — preserves existing behaviour.
+     * - ``false``: skip dispatch for posts whose ``props.from_bot``
+     *   is true. Use when other bots in the channel emit status
+     *   text that shouldn't trigger this agent (e.g. gateroom's
+     *   manager-bot lifecycle posts in worker channels).
+     * - ``"mentions"``: dispatch on bot-authored posts only when the
+     *   bot user is explicitly @-mentioned in the post body.
+     *
+     * The runtime check lives in the post-ingest path; agents that
+     * set ``allowBots: false`` ignore bot-authored posts regardless
+     * of their content.
+     */
+    allowBots: z.union([z.boolean(), z.literal("mentions")]).optional(),
     dmPolicy: DmPolicySchema.optional().default("pairing"),
     allowFrom: z.array(z.union([z.string(), z.number()])).optional(),
     groupAllowFrom: z.array(z.union([z.string(), z.number()])).optional(),
