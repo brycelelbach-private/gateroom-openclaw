@@ -1255,6 +1255,18 @@ export async function monitorMattermostProvider(opts: MonitorMattermostOpts = {}
           logVerboseMessage(`mattermost: drop post (self sender=${senderId})`);
           return;
         }
+        // Mattermost sets `props.from_bot = "true"` (yes, the string)
+        // on every post the API receives from a bot account, including
+        // status posts from sibling integrations on the same team
+        // (gateroom-manager bot, MM webhooks, etc.). Treating those as
+        // user input lets bot-to-bot loops form — most visibly when
+        // the gateroom-manager bot posts `Session foo is up.` into a
+        // worker channel and the worker's openclaw main agent tries
+        // to respond. Drop them.
+        if (post.props?.from_bot === "true") {
+          logVerboseMessage(`mattermost: drop post (from_bot sender=${senderId})`);
+          return;
+        }
         if (isSystemPost(post)) {
           logVerboseMessage(`mattermost: drop post (system post type=${post.type ?? "unknown"})`);
           return;
