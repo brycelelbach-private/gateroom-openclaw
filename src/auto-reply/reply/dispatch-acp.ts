@@ -279,6 +279,19 @@ async function finalizeAcpTurnOutput(params: {
     queuedFinal = queuedFinal || delivered;
   }
 
+  // gateroom#342 — the "Session ids resolved." notice currently fires
+  // after the first turn (because the identity is only knowable from
+  // the agent's first response). Operators experience this as
+  // surprising: they spawn a session, send the first message, get
+  // their reply *and* a follow-up id-resolved notice. The cleaner UX
+  // is to surface the notice as soon as the spawn handler binds the
+  // agent — even if the identity is still pending — so the operator
+  // sees a "spawning… ids resolved" sequence in the channel rather
+  // than the resolution appearing only after they speak. The full
+  // fix requires plumbing an emit-at-spawn signal from
+  // commands/acp-spawn.ts; this tracking comment marks the dispatch
+  // half that has to coordinate (don't double-post if spawn already
+  // emitted).
   if (params.shouldEmitResolvedIdentityNotice) {
     const { readAcpSessionEntry } = await loadDispatchAcpSessionRuntime();
     const currentMeta = readAcpSessionEntry({
