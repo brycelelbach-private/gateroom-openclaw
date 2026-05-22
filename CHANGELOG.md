@@ -148,6 +148,7 @@ Docs: https://docs.openclaw.ai
 
 ### Fixes
 
+- Mattermost: ignore bot-authored and webhook-authored posts before routing inbound channel messages, preventing slash-command replies and other automation posts from waking the agent.
 - Compute plugin callback authorization dynamically [AI]. (#78866) Thanks @pgondhi987.
 - fix(active-memory): require admin scope for global toggles [AI]. (#78863) Thanks @pgondhi987.
 - Honor owner enforcement for native commands [AI]. (#78864) Thanks @pgondhi987.

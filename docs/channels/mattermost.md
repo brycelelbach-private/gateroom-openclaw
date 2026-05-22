@@ -155,6 +155,7 @@ Notes:
 
 - `onchar` still responds to explicit @mentions.
 - `channels.mattermost.requireMention` is honored for legacy configs but `chatmode` is preferred.
+- Bot-authored and webhook-authored Mattermost posts are ignored before routing so OpenClaw does not respond to slash-command replies or other automation posts.
 
 ## Threading and sessions
 

@@ -9,6 +9,7 @@ import {
   canFinalizeMattermostPreviewInPlace,
   deliverMattermostReplyWithDraftPreview,
   evaluateMattermostMentionGate,
+  isMattermostBotAuthoredPost,
   MattermostRetryableInboundError,
   processMattermostReplayGuardedPost,
   resolveMattermostReactionChannelId,
@@ -155,6 +156,30 @@ describe("mattermost mention gating", () => {
     expect(account.requireMention).toBe(true);
     expect(decision.shouldRequireMention).toBe(true);
     expect(decision.dropReason).toBe("missing-mention");
+  });
+});
+
+describe("mattermost bot-authored post detection", () => {
+  it.each([
+    { props: { from_bot: "true" }, senderInfo: null },
+    { props: { from_webhook: "true" }, senderInfo: null },
+    { props: {}, senderInfo: { id: "bot-user", is_bot: true } },
+  ])("detects bot-authored posts from Mattermost metadata %#", ({ props, senderInfo }) => {
+    expect(
+      isMattermostBotAuthoredPost({
+        post: { id: "post-1", props },
+        senderInfo,
+      }),
+    ).toBe(true);
+  });
+
+  it("leaves regular user posts routable", () => {
+    expect(
+      isMattermostBotAuthoredPost({
+        post: { id: "post-1", props: {} },
+        senderInfo: { id: "user-1", username: "alice" },
+      }),
+    ).toBe(false);
   });
 });
 

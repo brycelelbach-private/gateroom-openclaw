@@ -26,6 +26,7 @@ export type MattermostUser = {
   first_name?: string | null;
   last_name?: string | null;
   update_at?: number;
+  is_bot?: boolean;
 };
 
 export type MattermostChannel = {

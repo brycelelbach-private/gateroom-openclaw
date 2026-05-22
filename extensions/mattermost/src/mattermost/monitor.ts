@@ -245,6 +245,22 @@ function isSystemPost(post: MattermostPost): boolean {
   return normalizeOptionalString(post.type) !== undefined;
 }
 
+function isTruthyMattermostPostProp(value: unknown): boolean {
+  return value === true || (typeof value === "string" && value.toLowerCase() === "true");
+}
+
+export function isMattermostBotAuthoredPost(params: {
+  post: MattermostPost;
+  senderInfo?: MattermostUser | null;
+}): boolean {
+  const props = params.post.props ?? {};
+  return (
+    isTruthyMattermostPostProp(props.from_bot) ||
+    isTruthyMattermostPostProp(props.from_webhook) ||
+    params.senderInfo?.is_bot === true
+  );
+}
+
 function channelChatType(kind: ChatType): "direct" | "group" | "channel" {
   if (kind === "direct") {
     return "direct";
@@ -1259,6 +1275,13 @@ export async function monitorMattermostProvider(opts: MonitorMattermostOpts = {}
           logVerboseMessage(`mattermost: drop post (system post type=${post.type ?? "unknown"})`);
           return;
         }
+        const senderInfo = isMattermostBotAuthoredPost({ post })
+          ? null
+          : await resolveUserInfo(senderId);
+        if (isMattermostBotAuthoredPost({ post, senderInfo })) {
+          logVerboseMessage(`mattermost: drop post (bot author sender=${senderId})`);
+          return;
+        }
 
         const channelInfo = await resolveChannelInfo(channelId);
         const kind = resolveMattermostTrustedChatKind({
@@ -1268,7 +1291,7 @@ export async function monitorMattermostProvider(opts: MonitorMattermostOpts = {}
 
         const senderName =
           normalizeOptionalString(payload.data?.sender_name) ??
-          normalizeOptionalString((await resolveUserInfo(senderId))?.username) ??
+          normalizeOptionalString(senderInfo?.username) ??
           senderId;
         const rawText = normalizeOptionalString(post.message) ?? "";
         const dmPolicy = account.config.dmPolicy ?? "pairing";
@@ -1747,10 +1770,9 @@ export async function monitorMattermostProvider(opts: MonitorMattermostOpts = {}
               // (websocket pong timeout, fetch failed, 5xx) must not
               // drop the chunk silently. We retry with exponential
               // backoff capped at 30 s. Surfacing every retry via
-              // runtime.warn so a chunk stuck in an outage is visible
+              // runtime.error so a chunk stuck in an outage is visible
               // in the operator's journal rather than silent.
               let attempt = 0;
-              // eslint-disable-next-line no-constant-condition
               while (true) {
                 attempt++;
                 try {
@@ -1793,7 +1815,7 @@ export async function monitorMattermostProvider(opts: MonitorMattermostOpts = {}
                   return;
                 } catch (err) {
                   const wait = Math.min(30_000, 1_000 * 2 ** Math.max(0, attempt - 1));
-                  runtime.warn?.(
+                  runtime.error?.(
                     `mattermost ${info.kind} reply attempt ${attempt} failed: ${String(err)}; ` +
                       `retrying in ${wait}ms`,
                   );

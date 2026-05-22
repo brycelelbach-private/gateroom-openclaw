@@ -405,6 +405,108 @@ describe("mattermost inbound user posts", () => {
     });
   });
 
+  it("ignores bot-authored webhook posts", async () => {
+    const socket = new FakeWebSocket();
+    const abortController = new AbortController();
+    mockState.abortController = abortController;
+    const { monitorMattermostProvider } = await import("./monitor.js");
+
+    const monitor = monitorMattermostProvider({
+      config: testConfig,
+      runtime: testRuntime(),
+      abortSignal: abortController.signal,
+      webSocketFactory: () => socket,
+    });
+
+    await vi.waitFor(() => {
+      expect(socket.openListenerCount).toBeGreaterThan(0);
+    });
+    socket.emitOpen();
+
+    await socket.emitMessage({
+      event: "posted",
+      data: {
+        channel_id: "chan-1",
+        channel_name: "town-square",
+        channel_display_name: "Town Square",
+        sender_name: "slash-command",
+        post: JSON.stringify({
+          id: "post-bot-1",
+          channel_id: "chan-1",
+          user_id: "user-1",
+          message: "/gr-claude on self-dev",
+          create_at: 1_714_000_000_000,
+          props: {
+            from_webhook: "true",
+          },
+        }),
+      },
+      broadcast: {
+        channel_id: "chan-1",
+        user_id: "user-1",
+      },
+    });
+    abortController.abort();
+    socket.emitClose(1000);
+    await monitor;
+
+    expect(mockState.resolveChannelInfo).not.toHaveBeenCalled();
+    expect(mockState.resolveUserInfo).not.toHaveBeenCalled();
+    expect(mockState.dispatchReplyFromConfig).not.toHaveBeenCalled();
+  });
+
+  it("ignores posts from Mattermost bot users", async () => {
+    const socket = new FakeWebSocket();
+    const abortController = new AbortController();
+    mockState.abortController = abortController;
+    mockState.resolveUserInfo.mockResolvedValue({
+      id: "bot-author",
+      username: "ops",
+      is_bot: true,
+    });
+    const { monitorMattermostProvider } = await import("./monitor.js");
+
+    const monitor = monitorMattermostProvider({
+      config: testConfig,
+      runtime: testRuntime(),
+      abortSignal: abortController.signal,
+      webSocketFactory: () => socket,
+    });
+
+    await vi.waitFor(() => {
+      expect(socket.openListenerCount).toBeGreaterThan(0);
+    });
+    socket.emitOpen();
+
+    await socket.emitMessage({
+      event: "posted",
+      data: {
+        channel_id: "chan-1",
+        channel_name: "town-square",
+        channel_display_name: "Town Square",
+        sender_name: "ops",
+        post: JSON.stringify({
+          id: "post-bot-2",
+          channel_id: "chan-1",
+          user_id: "bot-author",
+          message: "Spawning session triage.",
+          create_at: 1_714_000_000_000,
+        }),
+      },
+      broadcast: {
+        channel_id: "chan-1",
+        user_id: "bot-author",
+      },
+    });
+    abortController.abort();
+    socket.emitClose(1000);
+    await monitor;
+
+    expect(mockState.resolveUserInfo).toHaveBeenCalledWith("bot-author");
+    expect(mockState.resolveChannelInfo).not.toHaveBeenCalled();
+    expect(mockState.dispatchReplyFromConfig).not.toHaveBeenCalled();
+  });
+
   it("pins direct-message main route updates to the configured owner", async () => {
     const socket = new FakeWebSocket();
     const abortController = new AbortController();
