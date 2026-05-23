@@ -49,6 +49,7 @@ import {
   normalizeMattermostAllowList,
 } from "./monitor-auth.js";
 import {
+  decideMattermostMachineEmittedPost,
   evaluateMattermostMentionGate,
   mapMattermostChannelTypeToChatType,
   resolveMattermostTrustedChatKind,
@@ -1267,13 +1268,21 @@ export async function monitorMattermostProvider(opts: MonitorMattermostOpts = {}
         // `/gr-claude on <worker>: session <name> is up.` slash-reply
         // (from_webhook=true, attributed to the invoking user) lands
         // in a worker channel and the worker's openclaw main agent
-        // tries to respond. Drop both.
-        if (post.props?.from_bot === "true") {
-          logVerboseMessage(`mattermost: drop post (from_bot sender=${senderId})`);
-          return;
-        }
-        if (post.props?.from_webhook === "true") {
-          logVerboseMessage(`mattermost: drop post (from_webhook sender=${senderId})`);
+        // tries to respond. Drop both — *unless* the post is itself
+        // a registered openclaw control command (e.g. `/acp spawn
+        // claude --bind here` posted by the gateroom-manager bot to
+        // bind the ACP harness to a session channel). See
+        // `decideMattermostMachineEmittedPost` for the policy.
+        const machineEmittedDecision = decideMattermostMachineEmittedPost({
+          fromBot: typeof post.props?.from_bot === "string" ? post.props.from_bot : undefined,
+          fromWebhook:
+            typeof post.props?.from_webhook === "string" ? post.props.from_webhook : undefined,
+          hasControlCommand: core.channel.text.hasControlCommand(post.message ?? undefined, cfg),
+        });
+        if (machineEmittedDecision.drop) {
+          logVerboseMessage(
+            `mattermost: drop post (${machineEmittedDecision.reason} sender=${senderId})`,
+          );
           return;
         }
         if (isSystemPost(post)) {
