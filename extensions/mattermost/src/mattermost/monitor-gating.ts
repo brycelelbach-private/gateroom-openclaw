@@ -108,3 +108,38 @@ export function evaluateMattermostMentionGate(
     dropReason: null,
   };
 }
+
+export type MattermostMachineEmittedPostInput = {
+  fromBot?: string | null;
+  fromWebhook?: string | null;
+  hasControlCommand: boolean;
+};
+
+export type MattermostMachineEmittedPostDecision =
+  | { drop: false }
+  | { drop: true; reason: "from_bot" | "from_webhook" };
+
+/**
+ * Decide whether a Mattermost post that carries `props.from_bot=true`
+ * or `props.from_webhook=true` should be dropped before reaching the
+ * dispatch path. Machine-emitted posts are dropped to prevent
+ * bot-to-bot loops, but registered openclaw control commands (e.g.
+ * `/acp spawn claude --bind here` posted by an external orchestrator
+ * bot) legitimately need to flow through to the slash dispatcher.
+ */
+export function decideMattermostMachineEmittedPost(
+  input: MattermostMachineEmittedPostInput,
+): MattermostMachineEmittedPostDecision {
+  const fromBot = input.fromBot === "true";
+  const fromWebhook = input.fromWebhook === "true";
+  if (!fromBot && !fromWebhook) {
+    return { drop: false };
+  }
+  if (input.hasControlCommand) {
+    return { drop: false };
+  }
+  if (fromBot) {
+    return { drop: true, reason: "from_bot" };
+  }
+  return { drop: true, reason: "from_webhook" };
+}

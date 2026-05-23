@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import {
+  decideMattermostMachineEmittedPost,
   evaluateMattermostMentionGate,
   mapMattermostChannelTypeToChatType,
   resolveMattermostTrustedChatKind,
@@ -98,5 +99,83 @@ describe("mattermost monitor gating", () => {
       shouldRequireMention: false,
       dropReason: null,
     });
+  });
+});
+
+describe("decideMattermostMachineEmittedPost", () => {
+  it("does not drop user posts (no machine-emitted props)", () => {
+    expect(
+      decideMattermostMachineEmittedPost({
+        fromBot: undefined,
+        fromWebhook: undefined,
+        hasControlCommand: false,
+      }),
+    ).toEqual({ drop: false });
+  });
+
+  it("drops bot posts that are not control commands", () => {
+    expect(
+      decideMattermostMachineEmittedPost({
+        fromBot: "true",
+        fromWebhook: undefined,
+        hasControlCommand: false,
+      }),
+    ).toEqual({ drop: true, reason: "from_bot" });
+  });
+
+  it("drops webhook posts that are not control commands", () => {
+    expect(
+      decideMattermostMachineEmittedPost({
+        fromBot: undefined,
+        fromWebhook: "true",
+        hasControlCommand: false,
+      }),
+    ).toEqual({ drop: true, reason: "from_webhook" });
+  });
+
+  it("does not drop bot posts that ARE control commands (e.g. /acp spawn)", () => {
+    // Carve-out for orchestrator bots that legitimately post slash
+    // commands. Without this, `/acp spawn claude --bind here` from a
+    // sibling bot is silently dropped and the channel never binds.
+    expect(
+      decideMattermostMachineEmittedPost({
+        fromBot: "true",
+        fromWebhook: undefined,
+        hasControlCommand: true,
+      }),
+    ).toEqual({ drop: false });
+  });
+
+  it("does not drop webhook posts that ARE control commands", () => {
+    expect(
+      decideMattermostMachineEmittedPost({
+        fromBot: undefined,
+        fromWebhook: "true",
+        hasControlCommand: true,
+      }),
+    ).toEqual({ drop: false });
+  });
+
+  it("treats anything other than the literal string \"true\" as not machine-emitted", () => {
+    // Mattermost serializes props as strings; only the exact string
+    // "true" is the live signal. Booleans / other strings should not
+    // trigger the drop.
+    expect(
+      decideMattermostMachineEmittedPost({
+        fromBot: "false",
+        fromWebhook: null,
+        hasControlCommand: false,
+      }),
+    ).toEqual({ drop: false });
+  });
+
+  it("prefers from_bot reason when both flags are set", () => {
+    expect(
+      decideMattermostMachineEmittedPost({
+        fromBot: "true",
+        fromWebhook: "true",
+        hasControlCommand: false,
+      }),
+    ).toEqual({ drop: true, reason: "from_bot" });
   });
 });
