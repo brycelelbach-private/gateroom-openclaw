@@ -298,6 +298,28 @@ function evaluateMattermostMentionGate(params) {
 		dropReason: null
 	};
 }
+/**
+* Decide whether a Mattermost post that carries `props.from_bot=true`
+* or `props.from_webhook=true` should be dropped before reaching the
+* dispatch path. Machine-emitted posts are dropped to prevent
+* bot-to-bot loops, but registered openclaw control commands (e.g.
+* `/acp spawn claude --bind here` posted by an external orchestrator
+* bot) legitimately need to flow through to the slash dispatcher.
+*/
+function decideMattermostMachineEmittedPost(input) {
+	const fromBot = input.fromBot === "true";
+	const fromWebhook = input.fromWebhook === "true";
+	if (!fromBot && !fromWebhook) return { drop: false };
+	if (input.hasControlCommand) return { drop: false };
+	if (fromBot) return {
+		drop: true,
+		reason: "from_bot"
+	};
+	return {
+		drop: true,
+		reason: "from_webhook"
+	};
+}
 //#endregion
 //#region extensions/mattermost/src/mattermost/monitor-helpers.ts
 const formatInboundFromLabel = formatInboundFromLabel$1;
@@ -1694,12 +1716,13 @@ async function monitorMattermostProvider(opts = {}) {
 					logVerboseMessage(`mattermost: drop post (self sender=${senderId})`);
 					return;
 				}
-				if (post.props?.from_bot === "true") {
-					logVerboseMessage(`mattermost: drop post (from_bot sender=${senderId})`);
-					return;
-				}
-				if (post.props?.from_webhook === "true") {
-					logVerboseMessage(`mattermost: drop post (from_webhook sender=${senderId})`);
+				const machineEmittedDecision = decideMattermostMachineEmittedPost({
+					fromBot: typeof post.props?.from_bot === "string" ? post.props.from_bot : void 0,
+					fromWebhook: typeof post.props?.from_webhook === "string" ? post.props.from_webhook : void 0,
+					hasControlCommand: core.channel.text.hasControlCommand(post.message ?? void 0, cfg)
+				});
+				if (machineEmittedDecision.drop) {
+					logVerboseMessage(`mattermost: drop post (${machineEmittedDecision.reason} sender=${senderId})`);
 					return;
 				}
 				if (isSystemPost(post)) {
