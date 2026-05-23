@@ -1698,6 +1698,10 @@ async function monitorMattermostProvider(opts = {}) {
 					logVerboseMessage(`mattermost: drop post (from_bot sender=${senderId})`);
 					return;
 				}
+				if (post.props?.from_webhook === "true") {
+					logVerboseMessage(`mattermost: drop post (from_webhook sender=${senderId})`);
+					return;
+				}
 				if (isSystemPost(post)) {
 					logVerboseMessage(`mattermost: drop post (system post type=${post.type ?? "unknown"})`);
 					return;
