@@ -571,7 +571,7 @@ const mattermostSetupWizard = {
 };
 //#endregion
 //#region extensions/mattermost/src/channel.ts
-const loadMattermostChannelRuntime = createLazyRuntimeModule(() => import("./channel.runtime-Dlpv0BZZ.js"));
+const loadMattermostChannelRuntime = createLazyRuntimeModule(() => import("./channel.runtime-B8eR0ecs.js"));
 const mattermostSecurityAdapter = createRestrictSendersChannelSecurity({
 	channelKey: "mattermost",
 	resolveDmPolicy: (account) => account.config.dmPolicy,
