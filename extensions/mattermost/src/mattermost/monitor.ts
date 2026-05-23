@@ -1256,15 +1256,24 @@ export async function monitorMattermostProvider(opts: MonitorMattermostOpts = {}
           return;
         }
         // Mattermost sets `props.from_bot = "true"` (yes, the string)
-        // on every post the API receives from a bot account, including
-        // status posts from sibling integrations on the same team
-        // (gateroom-manager bot, MM webhooks, etc.). Treating those as
-        // user input lets bot-to-bot loops form — most visibly when
-        // the gateroom-manager bot posts `Session foo is up.` into a
-        // worker channel and the worker's openclaw main agent tries
-        // to respond. Drop them.
+        // on every post the API receives from a bot account, and
+        // `props.from_webhook = "true"` on every post produced by a
+        // slash command response or incoming webhook (regardless of
+        // whose account is named as the post author). Either signal
+        // means the post was machine-emitted: status pings from
+        // sibling integrations, slash-command replies, webhook
+        // dispatch, etc. Treating those as user input lets bot-to-bot
+        // loops form — most visibly when the gateroom-manager bot's
+        // `/gr-claude on <worker>: session <name> is up.` slash-reply
+        // (from_webhook=true, attributed to the invoking user) lands
+        // in a worker channel and the worker's openclaw main agent
+        // tries to respond. Drop both.
         if (post.props?.from_bot === "true") {
           logVerboseMessage(`mattermost: drop post (from_bot sender=${senderId})`);
+          return;
+        }
+        if (post.props?.from_webhook === "true") {
+          logVerboseMessage(`mattermost: drop post (from_webhook sender=${senderId})`);
           return;
         }
         if (isSystemPost(post)) {
