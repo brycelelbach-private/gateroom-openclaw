@@ -9,7 +9,7 @@ import { c as it } from "../dist-4RsBJhMS.js";
 import { n as vi, t as globalExpect } from "../test.DNmyFkvJ-bfyWEIqf.js";
 import { t as addTestHook } from "../hooks.test-helpers-BqiMDO1R.js";
 import { C as createOutboundTestPlugin, g as createRuntimeEnv, w as createTestRegistry } from "../plugin-setup-wizard-BX2TD3WU.js";
-import "../testing-CbjTlejY.js";
+import "../testing-9-rbmiLx.js";
 import "../channel-mention-gating-C3WTlBpy.js";
 //#region src/plugin-sdk/test-helpers/directory.ts
 function createDirectoryTestRuntime() {

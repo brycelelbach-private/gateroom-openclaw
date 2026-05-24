@@ -1,2 +1,2 @@
-import { t as collectSlackSecurityAuditFindings } from "../../security-audit-Dv5c82Lv.js";
+import { t as collectSlackSecurityAuditFindings } from "../../security-audit-BEjMclB7.js";
 export { collectSlackSecurityAuditFindings };

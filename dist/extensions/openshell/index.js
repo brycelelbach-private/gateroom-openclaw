@@ -11,7 +11,7 @@ import { _ as createRemoteShellSandboxFsBridge, b as createWritableRenameTargetR
 import "../../text-runtime-BwruZakL.js";
 import { n as buildPluginConfigSchema } from "../../config-schema-D2jcl2zK.js";
 import { t as definePluginEntry } from "../../plugin-entry-BWtmlM8X.js";
-import "../../core-BGteDoGl.js";
+import "../../core-jZLhhsbc.js";
 import { t as runPluginCommandWithTimeout } from "../../run-command-BMpfmZC6.js";
 import "../../sandbox-equkCCfd.js";
 import "../../file-access-runtime-Y_oCkIxH.js";

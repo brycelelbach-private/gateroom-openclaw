@@ -15,7 +15,7 @@ import { i as resolveToolsBySender, n as resolveChannelGroupRequireMention, r as
 import { a as createHybridChannelConfigBase, c as createScopedChannelConfigBase, d as createTopLevelChannelConfigBase, i as createHybridChannelConfigAdapter, l as createScopedDmSecurityResolver, m as mapAllowFromEntries, o as createScopedAccountConfigAccessors, s as createScopedChannelConfigAdapter, u as createTopLevelChannelConfigAdapter } from "../channel-config-helpers-C8BoXENU.js";
 import { t as buildAccountScopedDmSecurityPolicy } from "../helpers-0MvO7C3B.js";
 import "../identity-BJqKZTLs.js";
-import { n as delegateCompactionToRuntime, t as buildMemorySystemPromptAddition } from "../delegate-MGnhqE1U.js";
+import { n as delegateCompactionToRuntime, t as buildMemorySystemPromptAddition } from "../delegate-Ccs2bzZg.js";
 import "../text-runtime-BwruZakL.js";
 import { r as emptyPluginConfigSchema } from "../config-schema-D2jcl2zK.js";
 import "../setup-helpers-CLAbCTy7.js";

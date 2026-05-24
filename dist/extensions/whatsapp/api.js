@@ -20,7 +20,7 @@ import { t as createScopedExpiringIdCache } from "../../scoped-expiring-id-cache
 import { t as summarizeStringEntries } from "../../string-sample-Dt6J9PLC.js";
 import { n as isAutoLinkedFileRef, t as FILE_REF_EXTENSIONS_WITH_TLD } from "../../auto-linked-file-ref-DhCnnQD4.js";
 import { n as hasSystemMark, r as prefixSystemMessage, t as SYSTEM_MARK } from "../../system-message-BgLTIhzn.js";
-import "../../core-BGteDoGl.js";
+import "../../core-jZLhhsbc.js";
 import "../../account-resolution-JGAwpkVB.js";
 import "../../channel-actions-CQS1T-uM.js";
 import { r as resolveDefaultWhatsAppAccountId, t as listAccountIds } from "../../account-ids-XFULV7eu.js";
@@ -29,17 +29,17 @@ import { a as normalizeWhatsAppAllowFromEntries, c as normalizeWhatsAppTarget, i
 import { t as resolveWhatsAppOutboundTarget } from "../../resolve-outbound-target-Dge4Ims2.js";
 import "../../reaction-level-Bs0rZw_5.js";
 import { a as resolveJidToE164, i as markdownToWhatsApp, n as isSelfChatMode, o as toWhatsappJid, r as jidToE164, t as assertWebChannel } from "../../text-runtime-r2_qT468.js";
-import "../../send-CDZB-zjt.js";
-import { t as whatsappPlugin } from "../../channel-f60aqdcB.js";
+import "../../send-COzHY7Ij.js";
+import { t as whatsappPlugin } from "../../channel-CW32zdNh.js";
 import { n as WHATSAPP_LEGACY_OUTBOUND_SEND_DEP_KEYS } from "../../outbound-base-D6dv6s88.js";
 import { t as whatsappCommandPolicy } from "../../command-policy-C1zpM9d6.js";
-import { a as resolveWhatsAppGroupToolPolicy, i as resolveWhatsAppGroupRequireMention, o as resolveWhatsAppGroupIntroHint } from "../../shared-BBz8Zebr.js";
+import { a as resolveWhatsAppGroupToolPolicy, i as resolveWhatsAppGroupRequireMention, o as resolveWhatsAppGroupIntroHint } from "../../shared-CIqFflw7.js";
 import "../../config-schema-C28LHRG2.js";
-import { t as whatsappSetupPlugin } from "../../channel.setup-nMS3U65u.js";
+import { t as whatsappSetupPlugin } from "../../channel.setup-DHyZZPrG.js";
 import { t as DEFAULT_WEB_MEDIA_BYTES } from "../../constants-BTIDqDls.js";
 import { n as listWhatsAppDirectoryPeersFromConfig, t as listWhatsAppDirectoryGroupsFromConfig } from "../../directory-config-Dmf_ECE8.js";
-import { t as __testing } from "../../access-control-BRMhTA0D.js";
-import { p as extractText, t as createWebSendApi } from "../../send-api-DRDmLybD.js";
+import { t as __testing } from "../../access-control-DXA46ZQY.js";
+import { p as extractText, t as createWebSendApi } from "../../send-api-BMVCbdWO.js";
 import { r as waitForWaConnection, t as createWaSocket } from "../../session-6s9bzd-w.js";
 //#region extensions/whatsapp/src/qa-driver.runtime.ts
 function normalizeObservedMessage(message, authDir) {

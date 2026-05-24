@@ -9,7 +9,7 @@ import { a as createFixedWindowRateLimiter, r as WEBHOOK_RATE_LIMIT_DEFAULTS } f
 import { a as createWebhookInFlightLimiter, n as WEBHOOK_IN_FLIGHT_DEFAULTS, s as readJsonWebhookBodyOrReject } from "../../webhook-request-guards-B2b8_Dfb.js";
 import { t as normalizeWebhookPath } from "../../webhook-path-LUDpjuwm.js";
 import { l as withResolvedWebhookRequestPipeline, o as resolveWebhookTargetWithAuthOrReject } from "../../webhook-targets-BzI5OOL9.js";
-import "../../api-cVY2TFn2.js";
+import "../../api-_nT9Fzo9.js";
 import "../../runtime-api-bRFwyiHx.js";
 import { z } from "zod";
 //#region extensions/webhooks/src/config.ts
