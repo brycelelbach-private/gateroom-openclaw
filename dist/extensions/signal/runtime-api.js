@@ -10,7 +10,7 @@ import { n as formatPairingApproveHint } from "../../helpers-0MvO7C3B.js";
 import "../../text-runtime-BwruZakL.js";
 import { r as emptyPluginConfigSchema } from "../../config-schema-D2jcl2zK.js";
 import { s as migrateBaseNameToDefaultAccount, t as applyAccountNameToChannelSection } from "../../setup-helpers-CLAbCTy7.js";
-import { c as getChatChannelMeta } from "../../core-BGteDoGl.js";
+import { c as getChatChannelMeta } from "../../core-jZLhhsbc.js";
 import { t as createPluginRuntimeStore } from "../../runtime-store-BrGF12E6.js";
 import { n as resolveAllowlistProviderRuntimeGroupPolicy, r as resolveDefaultGroupPolicy } from "../../runtime-group-policy-Csd9vOWJ.js";
 import { t as resolveChannelMediaMaxBytes } from "../../media-limits-DqBuvyjp.js";
@@ -18,18 +18,18 @@ import { t as PAIRING_APPROVED_MESSAGE } from "../../pairing-message-MtgX9qjd.js
 import { c as collectStatusIssuesFromLastError, d as createDefaultChannelRuntimeState, n as buildBaseChannelStatusSummary, t as buildBaseAccountStatusSnapshot } from "../../status-helpers-Q6qpKJsI.js";
 import { t as detectBinary } from "../../detect-binary-B3MLg9Dr.js";
 import "../../setup-tools-DBqtm4nF.js";
-import "../../reply-runtime-Bxp5-La7.js";
+import "../../reply-runtime-CT-WEmST.js";
 import "../../media-runtime-ElMrhsqI.js";
 import "../../channel-status-C6g3kAWJ.js";
 import { i as resolveSignalAccount, n as listSignalAccountIds, r as resolveDefaultSignalAccountId, t as listEnabledSignalAccounts } from "../../accounts-DicMCTLT.js";
 import { d as looksLikeSignalTargetId, f as normalizeSignalMessagingTarget } from "../../identity-BWMW1T-Y.js";
-import { n as sendReactionSignal, t as removeReactionSignal } from "../../reaction-runtime-api-DZrrNj29.js";
-import { n as resolveSignalReactionLevel, t as signalMessageActions } from "../../message-actions-YCJvjVig.js";
+import { n as sendReactionSignal, t as removeReactionSignal } from "../../reaction-runtime-api-D43L88in.js";
+import { n as resolveSignalReactionLevel, t as signalMessageActions } from "../../message-actions-D2e9L3sp.js";
 import "../../config-api-fdC9GGmP.js";
 import { r as installSignalCli } from "../../install-signal-cli-BmiacUoZ.js";
-import { t as monitorSignalProvider } from "../../monitor-CJ36yjtV.js";
-import { t as sendMessageSignal } from "../../send-CfkN5h_b.js";
-import { t as probeSignal } from "../../probe-N94H6N_b.js";
+import { t as monitorSignalProvider } from "../../monitor-BBGnZN-J.js";
+import { t as sendMessageSignal } from "../../send-D5WB_7vw.js";
+import { t as probeSignal } from "../../probe-D6_gTXiv.js";
 //#region extensions/signal/src/runtime.ts
 const { setRuntime: setSignalRuntime, clearRuntime: clearSignalRuntime } = createPluginRuntimeStore({
 	pluginId: "signal",

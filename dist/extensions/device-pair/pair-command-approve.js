@@ -1,7 +1,7 @@
 import { a as normalizeLowercaseStringOrEmpty, c as normalizeOptionalString } from "../../string-coerce-Bje8XVt9.js";
 import "../../text-runtime-BwruZakL.js";
 import { n as approveDevicePairing } from "../../device-pairing-BfbEaNK4.js";
-import "../../api-D3gPEjxI.js";
+import "../../api-DqnBm61e.js";
 import { r as formatPendingRequests } from "../../notify-JYoNVJt7.js";
 //#region extensions/device-pair/pair-command-approve.ts
 function buildMultiplePendingApprovalReply(pending) {

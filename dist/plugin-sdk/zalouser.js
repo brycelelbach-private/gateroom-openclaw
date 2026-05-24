@@ -1,2 +1,2 @@
-import { a as resolveSenderCommandAuthorization, o as resolveSenderCommandAuthorizationWithRuntime } from "../command-auth-CEvrjqQq.js";
+import { a as resolveSenderCommandAuthorization, o as resolveSenderCommandAuthorizationWithRuntime } from "../command-auth-CKHxwZLR.js";
 export { resolveSenderCommandAuthorization, resolveSenderCommandAuthorizationWithRuntime };

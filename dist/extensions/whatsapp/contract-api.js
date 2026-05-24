@@ -5,7 +5,7 @@ import { n as unsupportedSecretRefSurfacePatterns, t as collectUnsupportedSecret
 import { r as isLegacyGroupSessionKey$1, t as canonicalizeLegacySessionKey$1 } from "../../session-contract-C0Zt4HsB.js";
 import { n as listWhatsAppDirectoryPeersFromConfig, t as listWhatsAppDirectoryGroupsFromConfig } from "../../directory-config-Dmf_ECE8.js";
 import { t as resolveWhatsAppRuntimeGroupPolicy$1 } from "../../runtime-group-policy-Dp17SxCI.js";
-import { t as __testing } from "../../access-control-BRMhTA0D.js";
+import { t as __testing } from "../../access-control-DXA46ZQY.js";
 //#region extensions/whatsapp/contract-api.ts
 const canonicalizeLegacySessionKey = canonicalizeLegacySessionKey$1;
 const isLegacyGroupSessionKey = isLegacyGroupSessionKey$1;

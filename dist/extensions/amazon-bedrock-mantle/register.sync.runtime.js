@@ -1,2 +1,2 @@
-import { t as registerBedrockMantlePlugin } from "../../register.sync.runtime-Lw9Di0jG.js";
+import { t as registerBedrockMantlePlugin } from "../../register.sync.runtime-BXg4Jait.js";
 export { registerBedrockMantlePlugin };

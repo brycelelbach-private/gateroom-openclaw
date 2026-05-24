@@ -2,7 +2,7 @@ import { c as normalizeOptionalString } from "../../string-coerce-Bje8XVt9.js";
 import { n as asNullableRecord } from "../../record-coerce-CAi9Wuk4.js";
 import "../../text-runtime-BwruZakL.js";
 import { t as note } from "../../note-CGsx0Ar8.js";
-import { n as resolveBrowserConfig } from "../../config-DjDSMja3.js";
+import { n as resolveBrowserConfig } from "../../config-C20Lbyeb.js";
 import { i as resolveGoogleChromeExecutableForPlatform, n as readBrowserVersion, r as resolveBrowserExecutableForPlatform, t as parseBrowserMajorVersion } from "../../chrome.executables-k1VMMZSl.js";
 import "../../record-shared-B_UQwwkG.js";
 import "../../sdk-setup-tools-CcXjmAnE.js";

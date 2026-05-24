@@ -9,7 +9,7 @@ import { p as resolveThinkingDefault } from "./model-selection-CEBK4_Qq.js";
 import { t as resolveAgentTimeoutMs } from "./timeout-BqDEuVvO.js";
 import { l as ensureAgentWorkspace } from "./workspace-Bn82tdyb.js";
 import { n as resolveAgentIdentity } from "./identity-BJqKZTLs.js";
-import { t as runEmbeddedPiAgent } from "./pi-embedded-CLQaf9Ey.js";
+import { t as runEmbeddedPiAgent } from "./pi-embedded-CcHsGife.js";
 //#region src/extensionAPI.ts
 if (process.env.VITEST !== "true" && process.env.OPENCLAW_SUPPRESS_EXTENSION_API_WARNING !== "1") process.emitWarning("openclaw/extension-api is deprecated. Migrate to api.runtime.agent.* or focused openclaw/plugin-sdk/<subpath> imports. See https://docs.openclaw.ai/plugins/sdk-migration", {
 	code: "OPENCLAW_EXTENSION_API_DEPRECATED",

@@ -5,7 +5,7 @@ import { r as normalizeProviderId } from "../provider-id-DAfV6Kh0.js";
 import { n as DEFAULT_MODEL, r as DEFAULT_PROVIDER } from "../defaults-4m7JJmD2.js";
 import { b as resolveConfiguredProviderFallback, y as parseModelRef } from "../model-selection-shared-BL9Kfr1K.js";
 import { l as resolvePersistedSelectedModelRef } from "../model-selection-CEBK4_Qq.js";
-import { i as selectAgentHarness } from "../selection-BEGbCGMD.js";
+import { i as selectAgentHarness } from "../selection-CaKP0wWy.js";
 import { t as resolveAgentRuntimeMetadata } from "../agent-runtime-metadata-Jqc-0LaQ.js";
 import { t as resolveAgentRuntimeLabel } from "../agent-runtime-label-B29lNeJa.js";
 //#region src/commands/status.summary.runtime.ts

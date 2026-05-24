@@ -8,7 +8,7 @@ import { t as zod_exports } from "../../zod-DVVrbDMY.js";
 import "../../runtime-api-Bc6zZroV.js";
 import { n as NostrProfileSchema } from "../../config-schema-BG79K7Zr.js";
 import { a as resolveNostrAccount, c as SimplePool, d as verifyEvent } from "../../setup-surface-Hr17TXUo.js";
-import { a as setNostrRuntime, i as getNostrRuntime, n as nostrPlugin, o as contentToProfile, r as publishNostrProfile, t as getNostrProfileState } from "../../channel-D4U7DGAN.js";
+import { a as setNostrRuntime, i as getNostrRuntime, n as nostrPlugin, o as contentToProfile, r as publishNostrProfile, t as getNostrProfileState } from "../../channel-Cg1ZWN4j.js";
 //#region extensions/nostr/src/nostr-profile-url-safety.ts
 function validateUrlSafety(urlStr) {
 	try {
