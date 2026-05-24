@@ -8,9 +8,9 @@ import { o as resolveDefaultModelForAgent } from "../../model-selection-CEBK4_Qq
 import { l as jsonResult } from "../../common-DPSDd5uL.js";
 import { t as definePluginEntry } from "../../plugin-entry-BWtmlM8X.js";
 import { n as resolveLivePluginConfigObject } from "../../plugin-config-runtime-CTMobv4N.js";
-import "../../agent-runtime-Blj-HA_w.js";
+import "../../agent-runtime-CkOer1yW.js";
 import { t as bumpSkillsSnapshotVersion } from "../../refresh-state-BZYpj0xT.js";
-import "../../api-zLzOYcP_.js";
+import "../../api-B_GEkhSW.js";
 import path from "node:path";
 import fs from "node:fs/promises";
 import { createHash, randomUUID } from "node:crypto";

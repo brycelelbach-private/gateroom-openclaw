@@ -155,7 +155,7 @@ async function tryRunGatewayRunFastPath(argv, startupTrace) {
 	if (!isGatewayRunFastPathArgv(argv)) return false;
 	const [{ Command }, { addGatewayRunCommand }, { VERSION }, { emitCliBanner }, { resolveCliStartupPolicy }] = await startupTrace.measure("gateway-run-imports", () => Promise.all([
 		import("commander"),
-		import("../run-BLpYG6eo.js"),
+		import("../run-CVkERUci.js"),
 		import("../version-DwPOTu01.js"),
 		import("../banner-CWr1vhZr.js"),
 		import("../command-startup-policy-Pax4uV46.js")
@@ -388,7 +388,7 @@ async function runCli(argv = process$1.argv) {
 		if (!bootstrapProxyBeforeFastPath && await tryRunGatewayRunFastPath(normalizedArgv, startupTrace)) return;
 		await bootstrapCliProxyCaptureAndDispatcher(startupTrace, { ensureDispatcher: shouldUseCliEnvProxy });
 		if (bootstrapProxyBeforeFastPath && await tryRunGatewayRunFastPath(normalizedArgv, startupTrace)) return;
-		const { tryRouteCli } = await startupTrace.measure("route-import", () => import("../route-B2LnufbJ.js"));
+		const { tryRouteCli } = await startupTrace.measure("route-import", () => import("../route-Du68Rkp6.js"));
 		if (await startupTrace.measure("route", () => tryRouteCli(normalizedArgv))) return;
 		const { createCliProgress } = await import("../progress-BRgDwAI1.js");
 		const startupProgress = createCliProgress({
@@ -407,7 +407,7 @@ async function runCli(argv = process$1.argv) {
 			const { enableConsoleCapture } = await import("../logging-BhNP7mjI.js");
 			enableConsoleCapture();
 			const [{ buildProgram }, { formatUncaughtError }, { runFatalErrorHooks }, { installUnhandledRejectionHandler, isBenignUncaughtExceptionError, isUncaughtExceptionHandled }, { restoreTerminalState }] = await startupTrace.measure("core-imports", () => Promise.all([
-				import("../program-DTXY9w5N.js"),
+				import("../program-dbBuBYjR.js"),
 				import("../infra/errors.js"),
 				import("../fatal-error-hooks-DxqbkWSf.js"),
 				import("../unhandled-rejections-C8TsB4mS.js"),
@@ -435,10 +435,10 @@ async function runCli(argv = process$1.argv) {
 				const { getProgramContext } = await import("../program-context-Cb8v6MAv.js");
 				const ctx = getProgramContext(program);
 				if (ctx) {
-					const { registerCoreCliByName } = await import("../command-registry-D_4ivwLt.js");
+					const { registerCoreCliByName } = await import("../command-registry-Tas-o_6x.js");
 					await registerCoreCliByName(program, ctx, primary, parseArgv);
 				}
-				const { registerSubCliByName } = await import("../register.subclis-BSki5Lm5.js");
+				const { registerSubCliByName } = await import("../register.subclis-CIlgn7DA.js");
 				await registerSubCliByName(program, primary, parseArgv);
 			});
 			if (!shouldSkipPluginCommandRegistration({

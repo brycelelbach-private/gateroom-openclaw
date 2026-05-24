@@ -1,2 +1,2 @@
-import { t as resolveTelegramToken } from "../token-DEPxYN1k.js";
+import { t as resolveTelegramToken } from "../token-rSR1ozmL.js";
 export { resolveTelegramToken };

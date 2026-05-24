@@ -2,7 +2,7 @@ import { d as setMatrixThreadBindingIdleTimeoutBySessionKey, n as getMatrixThrea
 import { a as resolveMatrixDefaultOrOnlyAccountId, i as resolveMatrixChannelConfig, n as requiresExplicitMatrixDefaultAccount, r as resolveConfiguredMatrixAccountIds, t as findMatrixAccountEntry } from "../../account-selection-Cvi-6Mv4.js";
 import { n as listMatrixEnvAccountIds, r as resolveMatrixEnvAccountToken, t as getMatrixScopedEnvVarNames } from "../../env-vars-Dfr5Ex2F.js";
 import { a as resolveMatrixCredentialsPath, c as resolveMatrixLegacyFlatStoreRoot, i as resolveMatrixCredentialsFilename, l as sanitizeMatrixPathSegment, n as resolveMatrixAccountStorageRoot, o as resolveMatrixHomeserverKey, r as resolveMatrixCredentialsDir, s as resolveMatrixLegacyFlatStoragePaths, t as hashMatrixAccessToken } from "../../storage-paths-BUv3RFfl.js";
-import { t as matrixPlugin } from "../../channel-m_a959jT.js";
+import { t as matrixPlugin } from "../../channel-CQFVKS-p.js";
 import { n as matrixSetupAdapter, t as createMatrixSetupWizardProxy } from "../../setup-core-DxvhDkDc.js";
 import { t as matrixOnboardingAdapter } from "../../setup-surface-DwGIpXuX.js";
 import { t as createMatrixThreadBindingManager } from "../../thread-bindings-iRWR4zka.js";

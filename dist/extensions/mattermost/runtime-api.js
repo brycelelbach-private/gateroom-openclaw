@@ -12,7 +12,7 @@ import { a as resolveAllowlistMatchSimple } from "../../allowlist-match-BuNQdY9R
 import "../../provider-model-shared-R5UEMBKm.js";
 import { r as getAgentScopedMediaLocalRoots } from "../../local-roots-BC2wn9vm.js";
 import { n as applySetupAccountConfigPatch, s as migrateBaseNameToDefaultAccount, t as applyAccountNameToChannelSection } from "../../setup-helpers-CLAbCTy7.js";
-import "../../core-BGteDoGl.js";
+import "../../core-jZLhhsbc.js";
 import "../../routing-D3J5VUni.js";
 import { i as formatInboundFromLabel } from "../../envelope-Dx5eONEL.js";
 import { n as resolveControlCommandGate } from "../../command-gating-BM56-zBM.js";
@@ -39,12 +39,12 @@ import { t as buildAgentMediaPayload } from "../../agent-media-payload-rq24gG4d.
 import { t as loadOutboundMediaFromUrl } from "../../outbound-media-DI8Bcjpy.js";
 import "../../media-runtime-ElMrhsqI.js";
 import { t as chunkTextForOutbound } from "../../text-chunking-MhvGwVzv.js";
-import "../../command-auth-CEvrjqQq.js";
+import "../../command-auth-CKHxwZLR.js";
 import { t as listSkillCommandsForAgents } from "../../skill-commands-I2G0ulvM.js";
 import { t as buildModelsProviderData } from "../../commands-models-B_qUAGW4.js";
 import "../../channel-status-C6g3kAWJ.js";
 import "../../channel-feedback-B06FHR36.js";
-import "../../channel-inbound-CKn0b_E9.js";
+import "../../channel-inbound-B9-a3A_b.js";
 import "../../channel-lifecycle-DaRN6v7g.js";
 import "../../channel-message-ibxoZVQ3.js";
 import "../../session-store-runtime-CkCzVja9.js";

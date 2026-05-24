@@ -14,4 +14,5 @@ export declare function consumeAcpTurnStream(params: {
     onOutputEvent?: (event: Extract<AcpRuntimeEvent, {
         type: "text_delta" | "tool_call";
     }>) => Promise<void> | void;
+    abortGraceMs?: number;
 }): Promise<AcpTurnStreamOutcome>;

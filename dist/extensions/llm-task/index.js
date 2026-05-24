@@ -4,7 +4,7 @@ import { r as withTempWorkspace } from "../../private-temp-workspace-DqSvwJmi.js
 import { h as resolveModelRefFromString, i as buildModelAliasIndex } from "../../model-selection-shared-BL9Kfr1K.js";
 import "../../text-runtime-BwruZakL.js";
 import { t as definePluginEntry } from "../../plugin-entry-BWtmlM8X.js";
-import "../../agent-runtime-Blj-HA_w.js";
+import "../../agent-runtime-CkOer1yW.js";
 import "../../api-DIFTwiUb.js";
 import path from "node:path";
 import AjvPkg from "ajv";

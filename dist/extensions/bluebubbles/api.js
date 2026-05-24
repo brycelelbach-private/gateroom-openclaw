@@ -1,5 +1,5 @@
 import { T as isAllowedBlueBubblesSender } from "../../probe-DytTINOr.js";
-import { a as bluebubblesCapabilities, c as bluebubblesMeta, i as blueBubblesSetupAdapter, l as bluebubblesReload, n as collectBlueBubblesStatusIssues, o as bluebubblesConfigAdapter, r as blueBubblesSetupWizard, s as bluebubblesConfigSchema, t as bluebubblesPlugin, u as describeBlueBubblesAccount } from "../../channel-6a5vuEi-.js";
+import { a as bluebubblesCapabilities, c as bluebubblesMeta, i as blueBubblesSetupAdapter, l as bluebubblesReload, n as collectBlueBubblesStatusIssues, o as bluebubblesConfigAdapter, r as blueBubblesSetupWizard, s as bluebubblesConfigSchema, t as bluebubblesPlugin, u as describeBlueBubblesAccount } from "../../channel-CyDPdnkJ.js";
 import { n as BlueBubblesConfigSchema, t as BlueBubblesChannelConfigSchema } from "../../config-schema-CpDGCGmB.js";
 import { n as createBlueBubblesConversationBindingManager, t as __testing } from "../../conversation-bindings-YBO1U6jk.js";
 import { i as resolveBlueBubblesInboundConversationId, n as normalizeBlueBubblesAcpConversationId, r as resolveBlueBubblesConversationIdFromTarget, t as matchBlueBubblesAcpConversation } from "../../conversation-id-Bx-OTS_O.js";

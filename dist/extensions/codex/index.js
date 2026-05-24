@@ -4,14 +4,14 @@ import { c as resolveDefaultAgentId, o as resolveAgentWorkspaceDir, r as resolve
 import { n as readJsonFileWithFallback } from "../../json-store-Cq-yfJmX.js";
 import { t as definePluginEntry } from "../../plugin-entry-BWtmlM8X.js";
 import { n as resolveLivePluginConfigObject } from "../../plugin-config-runtime-CTMobv4N.js";
-import "../../agent-runtime-Blj-HA_w.js";
+import "../../agent-runtime-CkOer1yW.js";
 import { n as MIGRATION_REASON_TARGET_EXISTS, o as createMigrationItem, s as createMigrationManualItem, v as summarizeMigrationItems } from "../../migration-CMO8Wc2B.js";
 import { i as writeMigrationReport, n as copyMigrationFileItem, t as archiveMigrationItem } from "../../migration-runtime-CezUdWFi.js";
-import { t as createCodexAppServerAgentHarness } from "../../harness-CxHtZYdt.js";
-import { t as buildCodexMediaUnderstandingProvider } from "../../media-understanding-provider-Dj-0vLak.js";
-import { t as buildCodexProvider } from "../../provider-CsMXFopp.js";
+import { t as createCodexAppServerAgentHarness } from "../../harness-CsiZ3zpg.js";
+import { t as buildCodexMediaUnderstandingProvider } from "../../media-understanding-provider-k4L2hRDD.js";
+import { t as buildCodexProvider } from "../../provider-Cfg0R8gC.js";
 import { f as describeControlFailure, r as formatCodexDisplayText } from "../../command-formatters-Ca0bxQA3.js";
-import { n as handleCodexConversationInboundClaim, t as handleCodexConversationBindingResolved } from "../../conversation-binding-CfwzadJv.js";
+import { n as handleCodexConversationInboundClaim, t as handleCodexConversationBindingResolved } from "../../conversation-binding-D_gPxRgS.js";
 import path from "node:path";
 import fs from "node:fs/promises";
 import os from "node:os";
@@ -28,7 +28,7 @@ function createCodexCommand(options) {
 	};
 }
 async function handleCodexCommand(ctx, options = {}) {
-	const { handleCodexSubcommand } = await import("../../command-handlers-YAvzTvBw.js");
+	const { handleCodexSubcommand } = await import("../../command-handlers-BRfLP0VJ.js");
 	try {
 		return await handleCodexSubcommand(ctx, options);
 	} catch (error) {
