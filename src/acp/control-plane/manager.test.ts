@@ -2104,6 +2104,89 @@ describe("AcpSessionManager", () => {
     expect(states).not.toContain("error");
   });
 
+  it("unwedges an active turn when the runtime adapter does not honor cancel", async () => {
+    // Reproduces the gateroom field bug where /acp cancel during an in-flight
+    // tool call left the per-session actor lock held until the 48-hour turn
+    // timeout fired, which silenced the session for every follow-up message
+    // (see manager.turn-stream.ts ABORT_GRACE_MS comment).
+    const runtimeState = createRuntime();
+    hoisted.requireAcpRuntimeBackendMock.mockReturnValue({
+      id: "acpx",
+      runtime: runtimeState.runtime,
+    });
+    hoisted.readAcpSessionEntryMock.mockReturnValue({
+      sessionKey: "agent:codex:acp:session-1",
+      storeSessionKey: "agent:codex:acp:session-1",
+      acp: readySessionMeta(),
+    });
+
+    let enteredRun = false;
+    // Adapter ignores the abort signal and never yields — emulates a runtime
+    // whose underlying transport doesn't propagate cancel into the active
+    // tool call.
+    runtimeState.runTurn.mockImplementation(async function* () {
+      enteredRun = true;
+      await new Promise<void>(() => {});
+      yield { type: "done" as const };
+    });
+
+    const manager = new AcpSessionManager();
+    const runPromise = manager.runTurn({
+      cfg: baseCfg,
+      sessionKey: "agent:codex:acp:session-1",
+      text: "long task",
+      mode: "prompt",
+      requestId: "run-1",
+    });
+    await vi.waitFor(
+      () => {
+        expect(enteredRun).toBe(true);
+      },
+      { interval: 1 },
+    );
+
+    await manager.cancelSession({
+      cfg: baseCfg,
+      sessionKey: "agent:codex:acp:session-1",
+      reason: "manual-cancel",
+    });
+
+    // The hung iterator forces the consumer to use its abort grace fallback;
+    // bound the wait so a regression here fails fast instead of hanging the
+    // whole suite.
+    await expect(
+      Promise.race([
+        runPromise.catch((error) => ({ caught: error })),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("runTurn did not settle after cancel")), 30_000),
+        ),
+      ]),
+    ).resolves.toMatchObject({
+      caught: expect.objectContaining({ code: "ACP_TURN_FAILED" }),
+    });
+
+    // Actor lock released — a follow-up turn for the same session must run.
+    runtimeState.runTurn.mockImplementationOnce(async function* () {
+      yield { type: "done" as const };
+    });
+    await manager.runTurn({
+      cfg: baseCfg,
+      sessionKey: "agent:codex:acp:session-1",
+      text: "follow-up after cancel",
+      mode: "prompt",
+      requestId: "run-2",
+    });
+
+    expect(runtimeState.cancel).toHaveBeenCalledWith(
+      expect.objectContaining({ reason: "manual-cancel" }),
+    );
+    const states = extractStatesFromUpserts();
+    // First turn errored out (no terminal done); second turn drove the
+    // session back to idle.
+    expect(states).toContain("error");
+    expect(states.at(-1)).toBe("idle");
+  }, 45_000);
+
   it("cleans actor-tail bookkeeping after session turns complete", async () => {
     const runtimeState = createRuntime();
     hoisted.requireAcpRuntimeBackendMock.mockReturnValue({
